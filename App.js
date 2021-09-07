@@ -1,21 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import AppLoading from "expo-app-loading";
 
-export default function App() {
+import Screen from "./app/components/Screen";
+import AppNavigation from "./app/navigation/AppNavigation";
+import AuthNavigation from "./app/navigation/AuthNavigation";
+import AuthContext from "./app/auth/context";
+import authStorage from "./app/auth/authStorage";
+
+const App = () => {
+  const [user, setUser] = useState();
+  const [isReady, setIsReady] = useState(true);
+
+  const restoreUser = async () => {
+    const user = await authStorage.getUser();
+    setUser(user);
+  };
+
+  if (isReady)
+    return (
+      <AppLoading
+        startAsync={restoreUser}
+        onFinish={() => setIsReady(false)}
+        onError={(error) => console.log("Aploading error in app.js: ", error)}
+      />
+    );
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Screen>
+      <AuthContext.Provider value={{ user, setUser }}>
+        {user ? <AppNavigation /> : <AuthNavigation />}
+      </AuthContext.Provider>
+    </Screen>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
