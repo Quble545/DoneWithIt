@@ -31,7 +31,7 @@ const ListingsScreen = ({ navigation }) => {
 
   const handleLoad = async () => {
     const responsedata = await loadListings();
-    setListings(responsedata);
+    responsedata && setListings(responsedata);
   };
 
   useEffect(() => {
@@ -49,10 +49,12 @@ const ListingsScreen = ({ navigation }) => {
       )}
       {!isLoading && (
         <>
-          <FilterListings selected={selected} setSelected={handleSelect} />
-          {listings.length === 0 && (
-            <Text style={styles.text}>No Listings</Text>
+          {!error && (
+            <FilterListings selected={selected} setSelected={handleSelect} />
           )}
+          {listings.length === 0 && !error ? (
+            <Text style={styles.text}>No Listings</Text>
+          ) : null}
           <FlatList
             data={listings}
             keyExtractor={(item) => item.id.toString()}

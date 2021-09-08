@@ -1,10 +1,9 @@
 import { create } from "apisauce";
 import storage from "../utility/cache";
 import authStorage from "../auth/authStorage";
+import settings from "../config/settings";
 
-const endPoint = "http://10.38.174.127:9000/api";
-
-const clientApi = create({ baseURL: endPoint });
+const clientApi = create({ baseURL: settings.apiUrl });
 
 clientApi.addAsyncRequestTransform(async (request) => {
   const authToken = await authStorage.get();
