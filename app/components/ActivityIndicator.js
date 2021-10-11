@@ -5,11 +5,7 @@ const ActivityIndicator = ({ visible }) => {
   if (!visible) return null;
 
   return (
-    <LottiView
-      loop={false}
-      autoPlay
-      source={require("../assets/animation/loader.json")}
-    />
+    <LottiView autoPlay source={require("../assets/animation/loader.json")} />
   );
 };
 
