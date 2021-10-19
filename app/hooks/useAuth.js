@@ -15,12 +15,12 @@ export default useAuth = () => {
     if (!response.ok) return setError(true);
 
     const authToken = response.data;
-    authStorage.store(authToken);
+    await authStorage.store(authToken);
     setUser(jwtDecode(authToken));
   };
 
-  const logOut = () => {
-    authStorage.delete();
+  const logOut = async () => {
+    await authStorage.delete();
     setUser(null);
   };
 

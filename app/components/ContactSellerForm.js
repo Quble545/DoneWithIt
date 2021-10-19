@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Alert, Text } from "react-native";
-import * as Notifications from "expo-notifications";
 import * as Yup from "yup";
 
 import { Form, SellerInputForm, SubmitForm } from "./form";
@@ -19,22 +18,11 @@ const ContactSellerForm = ({ listing }) => {
     const response = await messagesApi.send(message, listing.id);
 
     if (!response.ok) {
-      console.log("response: ", response);
-
       return Alert.alert("Error", "Could not send message to the seller.");
     }
 
     setSentSuccess(true);
     resetForm();
-    Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Awesome!",
-        body: "Your message was sent to the seller.",
-      },
-      trigger: {
-        seconds: 1,
-      },
-    });
   };
 
   return (

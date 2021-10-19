@@ -11,6 +11,7 @@ const addListings = (item, axiosConfig) => {
   data.append("price", item.price);
   data.append("categoryId", item.categoryId);
   data.append("description", item.description);
+  data.append("userId", item.userId);
 
   item.images.forEach((image, index) => {
     data.append("images", {

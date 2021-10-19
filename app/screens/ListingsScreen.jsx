@@ -30,8 +30,12 @@ const ListingsScreen = ({ navigation }) => {
   };
 
   const handleLoad = async () => {
-    const responsedata = await loadListings();
-    responsedata && setListings(responsedata);
+    try {
+      const responsedata = await loadListings();
+      responsedata && setListings(responsedata);
+    } catch (error) {
+      console.log("load Listings: ", error);
+    }
   };
 
   useEffect(() => {

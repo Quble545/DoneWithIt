@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import * as Yup from "yup";
-import { View, StyleSheet } from "react-native";
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from "react-native";
 import {
   Form,
   InputForm,
@@ -12,8 +18,8 @@ import {
 import CategoryPicker from "../components/CategoryPickerItem";
 import ProgressBar from "../components/ProgressBar";
 import listingApi from "../api/listings";
-import useApi from "../hooks/useApi";
 import useLocation from "../hooks/useLocation";
+import AuthContext from "../auth/context";
 
 const schema = Yup.object({
   title: Yup.string().min(3).required().label("Title"),
@@ -90,15 +96,15 @@ const ListingEditScreen = () => {
     description: "",
     images: [],
   });
+  const { user } = useContext(AuthContext);
   const [progress, setProgress] = useState();
   const [isProgress, setIsProgress] = useState(false);
-  const { request } = useApi(listingApi.addListings);
   const { location } = useLocation();
 
   const handleSubmit = async (values) => {
-    const data = { ...values, location };
+    const data = { ...values, location, userId: user.userId };
     setIsProgress(true);
-    await request(data, {
+    await listingApi.addListings(data, {
       onUploadProgress: (progress) =>
         setProgress(progress.loaded / progress.total),
     });
@@ -115,35 +121,43 @@ const ListingEditScreen = () => {
           }}
         />
       ) : (
-        <Form
-          initialValues={item}
-          validationSchema={schema}
-          onSubmit={handleSubmit}
-        >
-          <ImagePickerForm name="images" />
-          <InputForm name="title" placeholder="Title" icon="pen" />
-          <InputForm
-            name="price"
-            placeholder="Price"
-            keyboardType="numeric"
-            icon="dollar-sign"
-            maxWidth={135}
-          />
-          <PickerForm
-            name="categoryId"
-            label="Category"
-            options={categories}
-            Component={CategoryPicker}
-            numOfColumns={3}
-            maxWidth={225}
-          />
-          <InputForm
-            name="description"
-            placeholder="Description"
-            icon="calendar-alt"
-          />
-          <SubmitForm title="Post" />
-        </Form>
+        <ScrollView style={{ flex: 1 }}>
+          <KeyboardAvoidingView
+            keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -65}
+            behavior="position"
+            style={styles.keyboard}
+          >
+            <Form
+              initialValues={item}
+              validationSchema={schema}
+              onSubmit={handleSubmit}
+            >
+              <ImagePickerForm name="images" />
+              <InputForm name="title" placeholder="Title" icon="pen" />
+              <InputForm
+                name="price"
+                placeholder="Price"
+                keyboardType="numeric"
+                icon="dollar-sign"
+                maxWidth={135}
+              />
+              <PickerForm
+                name="categoryId"
+                label="Category"
+                options={categories}
+                Component={CategoryPicker}
+                numOfColumns={3}
+                maxWidth={225}
+              />
+              <InputForm
+                name="description"
+                placeholder="Description"
+                icon="calendar-alt"
+              />
+              <SubmitForm title="Post" />
+            </Form>
+          </KeyboardAvoidingView>
+        </ScrollView>
       )}
     </View>
   );
@@ -151,7 +165,7 @@ const ListingEditScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 510,
+    flex: 1,
     justifyContent: "space-evenly",
     marginHorizontal: 17,
   },

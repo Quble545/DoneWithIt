@@ -24,11 +24,15 @@ const LoginScreen = () => {
   const { login, error } = useAuth();
 
   const handleSubmit = async ({ email, password }) => {
-    Keyboard.dismiss();
+    try {
+      Keyboard.dismiss();
 
-    setLoading(true);
-    await login({ email, password });
-    setLoading(false);
+      setLoading(true);
+      await login({ email, password });
+      setLoading(false);
+    } catch (error) {
+      console.log("Login", error);
+    }
   };
 
   return (
