@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
 
 import Card from "../components/Card";
 import Profile from "../components/Profile";
 import ContactSellerForm from "../components/ContactSellerForm";
+import AuthContext from "../auth/context";
 
 const ListingDetailScreen = ({ route }) => {
   const item = route.params;
+  const { user } = useContext(AuthContext);
+  const isCurrentUser = user.email === item.user.email;
 
   return (
     <>
@@ -18,11 +21,14 @@ const ListingDetailScreen = ({ route }) => {
         <Card
           title={item.title}
           price={item.price}
-          imageUrl={item.images[0].url}
-          thumbnailUrl={item.images[0].thumbnailUrl}
+          images={item.images}
+          slide
         />
-        <Profile title="Mosh Hamedani" subtile="5 Listings" />
-        <ContactSellerForm listing={item} />
+        <Profile
+          title={isCurrentUser ? "You" : item.user.name}
+          subtile={item.user.email}
+        />
+        {!isCurrentUser && <ContactSellerForm listing={item} />}
       </KeyboardAvoidingView>
     </>
   );

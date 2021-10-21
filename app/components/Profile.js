@@ -1,13 +1,19 @@
 import React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 
 const Profile = ({ title, subtile }) => {
   return (
     <View style={styles.container}>
-      <Image style={styles.image} source={require("../assets/mosh.jpg")} />
+      {/* <Image style={styles.image} source={require("../assets/mosh.jpg")} /> */}
+      <MaterialIcons
+        style={styles.image}
+        name="account-circle"
+        size={75}
+        color={colors["lighter"]}
+      />
       <View style={styles.textContainer}>
         <Text style={styles.textHeader}>{title}</Text>
         <Text style={styles.subTitle}>{subtile}</Text>
@@ -34,7 +40,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    marginLeft: 23,
+    marginLeft: 20.5,
     marginRight: 12,
   },
   textHeader: {

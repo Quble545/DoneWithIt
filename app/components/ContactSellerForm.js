@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Alert, Text } from "react-native";
+import { View, StyleSheet, Alert, Text, Keyboard } from "react-native";
 import * as Yup from "yup";
 
 import { Form, SellerInputForm, SubmitForm } from "./form";
@@ -15,6 +15,7 @@ const ContactSellerForm = ({ listing }) => {
   const [sentSuccess, setSentSuccess] = useState(false);
 
   const handleSubmit = async ({ message }, { resetForm }) => {
+    Keyboard.dismiss();
     const response = await messagesApi.send(message, listing.id);
 
     if (!response.ok) {
