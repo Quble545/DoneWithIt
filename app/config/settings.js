@@ -5,7 +5,7 @@ const settings = {
     apiUrl: "http://10.38.174.127:9000/api",
   },
   staging: {
-    apiUrl: "https://guarded-beyond-74695.herokuapp.com/api",
+    apiUrl: "http://10.38.174.127:9000/api",
   },
   pro: {
     apiUrl: "http://10.38.174.127:9000/api",

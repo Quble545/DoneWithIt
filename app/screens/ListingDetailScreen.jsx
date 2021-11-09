@@ -9,7 +9,7 @@ import AuthContext from "../auth/context";
 const ListingDetailScreen = ({ route }) => {
   const item = route.params;
   const { user } = useContext(AuthContext);
-  const isCurrentUser = user.email === item.user.email;
+  const isCurrentUser = user.email === item.user?.email;
 
   return (
     <>
@@ -25,8 +25,8 @@ const ListingDetailScreen = ({ route }) => {
           slide
         />
         <Profile
-          title={isCurrentUser ? "You" : item.user.name}
-          subtile={item.user.email}
+          title={isCurrentUser ? "You" : item.user?.name}
+          subtile={item.user?.email}
         />
         {!isCurrentUser && <ContactSellerForm listing={item} />}
       </KeyboardAvoidingView>
